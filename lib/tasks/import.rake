@@ -35,11 +35,8 @@ namespace :import do
   end
 end
 
-
 def parse_csv(path, model_name)
   csv_text = File.read(path)
-  csv = CSV.parse(csv_text, :headers => true)
-  csv.each do |row|
-    model_name.create!(row.to_h)
-  end
+  csv = CSV.parse(csv_text, headers: true)
+  csv.each { |row| model_name.create!(row.to_h) }
 end
