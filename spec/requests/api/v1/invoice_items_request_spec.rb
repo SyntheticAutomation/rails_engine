@@ -20,4 +20,17 @@ describe 'InvoiceItems API' do
     expect(response).to be_successful
     expect(invoice_item["data"]["id"]).to eq(id.to_s)
   end
+  it 'can find an invoice_item by different attributes' do
+    create(:invoice_item, quantity: 14)
+    create(:invoice_item, unit_price: 4000)
+
+    get '/api/v1/invoice_items/find?quantity=14'
+    invoice_item = JSON.parse(response.body)
+    expect(invoice_item["data"]["attributes"]["quantity"]).to eq(14)
+
+    get '/api/v1/invoice_items/find?unit_price=4000'
+
+    i_i = JSON.parse(response.body)
+    expect(i_i["data"]["attributes"]["unit_price"]).to eq(4000)
+  end
 end

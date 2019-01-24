@@ -20,4 +20,19 @@ describe 'Items API' do
     expect(response).to be_successful
     expect(item["data"]["id"]).to eq(id.to_s)
   end
+  it 'can find an item by attributes' do
+    create(:item, id: 999, name: "Burger", description: "yummy", unit_price: 10)
+
+    query_params = [ 'id=999',
+               'name=Burger',
+               'description=yummy',
+               'unit_price=10'
+             ]
+    1000.times do
+      sample = query_params.sample
+      get "/api/v1/items/find?#{sample}"
+      item = JSON.parse(response.body)
+      expect(item["data"]["attributes"]["id"]).to eq(999)
+    end
+  end
 end

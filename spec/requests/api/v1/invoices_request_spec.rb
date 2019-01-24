@@ -20,4 +20,12 @@ describe 'Invoices API' do
     expect(response).to be_successful
     expect(invoice["data"]["id"]).to eq(id.to_s)
   end
+  it 'can find an invoice by attributes' do
+    create(:invoice, id: 230)
+
+    get '/api/v1/invoices/find?id=230'
+
+    invoice = JSON.parse(response.body)
+    expect(invoice["data"]["attributes"]["id"]).to eq(230)
+  end
 end

@@ -36,4 +36,12 @@ describe 'Merchants API' do
     top_merchants_by_revenue = JSON.parse(response.body)
     expect(top_merchants_by_revenue["data"].count).to eq(2)
   end
+  it 'can find a merchant by attributes' do
+    create(:merchant, name: "Lucas")
+    create(:merchant, name: "Dr Strangelove")
+
+    get '/api/v1/merchants/find?name=Lucas'
+    merchant = JSON.parse(response.body)
+    expect(merchant["data"]["attributes"]["name"]).to eq("Lucas")
+  end
 end

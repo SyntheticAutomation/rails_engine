@@ -23,10 +23,15 @@ describe 'Customers API' do
   it 'can find a customer by different attributes' do
     create(:customer, first_name: "Henry")
     create(:customer, first_name: "Maria")
-    create(:customer, last_name: "Schmidt")
+    create(:customer, first_name: "Yuen", last_name: "Zhao")
 
-    get '/api/v1/customers/find?last_name=Schmidt'
+    get '/api/v1/customers/find?last_name=Zhao'
+    customer = JSON.parse(response.body)
+    expect(customer["data"]["attributes"]["first_name"]).to eq("Yuen")
 
+    get '/api/v1/customers/find?first_name=Maria'
 
+    maria = JSON.parse(response.body)
+    expect(maria["data"]["attributes"]["first_name"]).to eq("Maria")
   end
 end
