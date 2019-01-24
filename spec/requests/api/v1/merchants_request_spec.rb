@@ -36,12 +36,20 @@ describe 'Merchants API' do
     top_merchants_by_revenue = JSON.parse(response.body)
     expect(top_merchants_by_revenue["data"].count).to eq(2)
   end
-  it 'can find a merchant by attributes' do
-    create(:merchant, name: "Lucas")
-    create(:merchant, name: "Dr Strangelove")
+  it 'can find multiple merchants by different attributes' do
+    create(:merchant, name: "Snacks by Steve", id: 349)
+    create(:merchant, name: "Snacks by Steve", id: 11)
 
-    get '/api/v1/merchants/find?name=Lucas'
-    merchant = JSON.parse(response.body)
-    expect(merchant["data"]["attributes"]["name"]).to eq("Lucas")
+    get '/api/v1/merchants/find_all?name=Snacks%20by%20Steve'
+
+    matching_merchants = (JSON.parse(response.body))["data"]
+    merchant_1_attributes = matching_merchants[0]["attributes"]
+    merchant_2_attributes = matching_merchants[1]["attributes"]
+
+    10.times do
+      expect(matching_merchants.sample["attributes"]["name"]).to eq("Snacks by Steve")
+    end
+
+    expect(merchant_1_attributes["id"]).to eq(349)
   end
 end
