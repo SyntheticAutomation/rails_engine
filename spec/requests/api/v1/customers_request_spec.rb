@@ -10,7 +10,7 @@ describe 'Customers API' do
     customers = JSON.parse(response.body)
     expect(customers["data"].count).to eq(3)
   end
-  it 'can get one customer by its id' do
+  it 'can get a customer by id' do
     id = create(:customer).id
 
     get "/api/v1/customers/#{id}"
@@ -19,5 +19,14 @@ describe 'Customers API' do
 
     expect(response).to be_successful
     expect(customer["data"]["id"]).to eq(id.to_s)
+  end
+  it 'can find a customer by different attributes' do
+    create(:customer, first_name: "Henry")
+    create(:customer, first_name: "Maria")
+    create(:customer, last_name: "Schmidt")
+
+    get '/api/v1/customers/find?last_name=Schmidt'
+
+
   end
 end
