@@ -23,15 +23,20 @@ RSpec.describe Merchant, type: :model do
       item_3 = create(:item, merchant: merchant_3, unit_price: 1)
       item_4 = create(:item, merchant: merchant_4, unit_price: 1)
       item_5 = create(:item, merchant: merchant_5, unit_price: 1)
-      invoice_1 = create(:invoice)
+      invoice_1 = create(:invoice, merchant: merchant_1)
+      invoice_2 = create(:invoice, merchant: merchant_2)
+      invoice_3 = create(:invoice, merchant: merchant_3)
+      invoice_4 = create(:invoice, merchant: merchant_4)
+      invoice_5 = create(:invoice, merchant: merchant_5)
+      invoice_6 = create(:invoice, merchant: merchant_2)
       create(:invoice_item, invoice: invoice_1, item: item_1, quantity: 1, unit_price: 100)#merchant_1 has sold $100 and should be second highest
-      create(:invoice_item, invoice: invoice_1, item: item_2, quantity: 1, unit_price: 70)
-      create(:invoice_item, invoice: invoice_1, item: item_2, quantity: 1, unit_price: 70) #merchant_2 has sold $140 gross revenue and should be at the top
-      create(:invoice_item, invoice: invoice_1, item: item_3, quantity: 1, unit_price: 90) #merchant_3 has sold $90 and should be third highest
-      create(:invoice_item, invoice: invoice_1, item: item_4, quantity: 1, unit_price: 60)
-      create(:invoice_item, invoice: invoice_1, item: item_5, quantity: 1, unit_price: 80)
+      create(:invoice_item, invoice: invoice_2, item: item_2, quantity: 1, unit_price: 70)
+      create(:invoice_item, invoice: invoice_6, item: item_2, quantity: 1, unit_price: 75) #merchant_2 has sold $140 gross revenue and should be at the top
+      create(:invoice_item, invoice: invoice_3, item: item_3, quantity: 1, unit_price: 90) #merchant_3 has sold $90 and should be third highest
+      create(:invoice_item, invoice: invoice_4, item: item_4, quantity: 1, unit_price: 60)
+      create(:invoice_item, invoice: invoice_5, item: item_5, quantity: 1, unit_price: 80)
 
-      expect(Merchant.top_profiteers(1)).to eq(merchant_2)
+      expect(Merchant.top_profiteers(1).first).to eq(merchant_2)
       expect(Merchant.top_profiteers(5)[0]).to eq(merchant_2)
       expect(Merchant.top_profiteers(5)[1]).to eq(merchant_1)
       expect(Merchant.top_profiteers(5)[2]).to eq(merchant_3)
