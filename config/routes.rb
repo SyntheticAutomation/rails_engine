@@ -13,6 +13,7 @@ Rails.application.routes.draw do
       tables.each do |table|
         namespace table do
           get '/find', to: 'search#show'
+          get '/find_all', to: 'search#index'
           get '/most_revenue', to: 'most_revenue#index' if table == :merchants
         end
       end
