@@ -8,7 +8,7 @@ describe 'Invoices API' do
 
     expect(response).to be_successful
     invoices = JSON.parse(response.body)
-    expect(invoices.count).to eq(3)
+    expect(invoices["data"].count).to eq(3)
   end
   it 'can get one invoice by its id' do
     id = create(:invoice).id
@@ -18,6 +18,6 @@ describe 'Invoices API' do
     invoice = JSON.parse(response.body)
 
     expect(response).to be_successful
-    expect(invoice["id"]).to eq(id)
+    expect(invoice["data"]["id"]).to eq(id.to_s)
   end
 end

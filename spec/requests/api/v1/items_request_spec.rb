@@ -8,7 +8,7 @@ describe 'Items API' do
 
     expect(response).to be_successful
     items = JSON.parse(response.body)
-    expect(items.count).to eq(3)
+    expect(items["data"].count).to eq(3)
   end
   it 'can get one item by its id' do
     id = create(:item).id
@@ -18,6 +18,6 @@ describe 'Items API' do
     item = JSON.parse(response.body)
 
     expect(response).to be_successful
-    expect(item["id"]).to eq(id)
+    expect(item["data"]["id"]).to eq(id.to_s)
   end
 end
