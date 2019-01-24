@@ -28,4 +28,20 @@ describe 'Invoices API' do
     invoice = JSON.parse(response.body)
     expect(invoice["data"]["attributes"]["id"]).to eq(230)
   end
+  it 'can find multiple invoices by different attributes' do
+    create(:invoice, id: 29)
+    create(:invoice, id: 346)
+
+    get '/api/v1/invoices/find_all?status=shipped'
+
+    matching_invoices = (JSON.parse(response.body))["data"]
+    invoice_1_attributes = matching_invoices[0]["attributes"]
+    invoice_2_attributes = matching_invoices[1]["attributes"]
+
+    10.times do
+      expect(matching_invoices.sample["attributes"]["status"]).to eq("shipped")
+    end
+
+    expect(invoice_1_attributes["id"]).to eq(29)
+  end
 end

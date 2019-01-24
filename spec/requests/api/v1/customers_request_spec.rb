@@ -34,4 +34,23 @@ describe 'Customers API' do
     maria = JSON.parse(response.body)
     expect(maria["data"]["attributes"]["first_name"]).to eq("Maria")
   end
+  it 'can find multiple customers by different attributes' do
+    create(:customer, first_name: "L'Carpetron", last_name: "Dookmarriot")
+    create(:customer, first_name: "Davoin", last_name: "Smith")
+    create(:customer, first_name: "Javaris Jamar", last_name: "Javarison Lamar")
+    create(:customer, first_name: "Davoin", last_name: "Shower Handle")
+
+    get '/api/v1/customers/find_all?first_name=Davoin'
+
+    matching_customers = (JSON.parse(response.body))["data"]
+    customer_1_attributes = matching_customers[0]["attributes"]
+    customer_2_attributes = matching_customers[1]["attributes"]
+
+    10.times do
+      expect(matching_customers.sample["attributes"]["first_name"]).to eq("Davoin")
+    end
+
+    expect(customer_1_attributes["last_name"]).to eq("Smith")
+  end
+
 end

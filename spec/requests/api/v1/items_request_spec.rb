@@ -35,4 +35,22 @@ describe 'Items API' do
       expect(item["data"]["attributes"]["id"]).to eq(999)
     end
   end
+  it 'can find multiple items by different attributes' do
+    create(:item, id: 999, name: "Burger", description: "yummy", unit_price: 6000)
+    create(:item, id: 23, name: "iPhone", description: "facilitates tendonitis", unit_price: 6000)
+
+    get '/api/v1/items/find_all?unit_price=6000'
+
+    matching_items = (JSON.parse(response.body))["data"]
+    item_1_attributes = matching_items[0]["attributes"]
+    item_2_attributes = matching_items[1]["attributes"]
+
+    10.times do
+      expect(matching_items.sample["attributes"]["unit_price"]).to eq(6000)
+    end
+
+    expect(item_1_attributes["name"]).to eq("Burger")
+    expect(item_1_attributes["description"]).to eq("yummy")
+    expect(item_2_attributes["id"]).to eq(23)
+  end
 end
