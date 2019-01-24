@@ -23,12 +23,12 @@ describe 'Merchants API' do
   it 'can send top merchants by revenue' do
     merchant_1 = create(:merchant)
     merchant_2 = create(:merchant)
-    item_1 = create(:item, merchant: merchant_1, unit_price: 1)
-    item_2 = create(:item, merchant: merchant_2, unit_price: 1)
+    item_1 = create(:item, merchant: merchant_1, unit_price: 1.0)
+    item_2 = create(:item, merchant: merchant_2, unit_price: 1.0)
     invoice_1 = create(:invoice, merchant: merchant_1)
     invoice_2 = create(:invoice, merchant: merchant_2)
-    create(:invoice_item, invoice: invoice_1, item: item_1, quantity: 1, unit_price: 100)
-    create(:invoice_item, invoice: invoice_2, item: item_2, quantity: 1, unit_price: 100)
+    create(:invoice_item, invoice: invoice_1, item: item_1, quantity: 1, unit_price: 100.00)
+    create(:invoice_item, invoice: invoice_2, item: item_2, quantity: 1, unit_price: 100.00)
 
     get '/api/v1/merchants/most_revenue?quantity=2'
 

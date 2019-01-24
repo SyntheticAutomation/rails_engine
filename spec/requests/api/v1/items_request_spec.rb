@@ -21,7 +21,7 @@ describe 'Items API' do
     expect(item["data"]["id"]).to eq(id.to_s)
   end
   it 'can find an item by attributes' do
-    create(:item, id: 999, name: "Burger", description: "yummy", unit_price: 10)
+    create(:item, id: 999, name: "Burger", description: "yummy", unit_price: 10.00)
 
     query_params = [ 'id=999',
                'name=Burger',
@@ -36,17 +36,17 @@ describe 'Items API' do
     end
   end
   it 'can find multiple items by different attributes' do
-    create(:item, id: 999, name: "Burger", description: "yummy", unit_price: 6000)
-    create(:item, id: 23, name: "iPhone", description: "facilitates tendonitis", unit_price: 6000)
+    create(:item, id: 999, name: "Burger", description: "yummy", unit_price: 60.00)
+    create(:item, id: 23, name: "iPhone", description: "facilitates tendonitis", unit_price: 60.00)
 
-    get '/api/v1/items/find_all?unit_price=6000'
+    get '/api/v1/items/find_all?unit_price=60'
 
     matching_items = (JSON.parse(response.body))["data"]
     item_1_attributes = matching_items[0]["attributes"]
     item_2_attributes = matching_items[1]["attributes"]
 
     10.times do
-      expect(matching_items.sample["attributes"]["unit_price"]).to eq(6000)
+      expect(matching_items.sample["attributes"]["unit_price"]).to eq(60.00)
     end
 
     expect(item_1_attributes["name"]).to eq("Burger")

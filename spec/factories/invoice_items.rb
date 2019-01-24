@@ -4,7 +4,7 @@ FactoryBot.define do
     association :item, factory: :item
 
     quantity { 1 }
-    unit_price { 1 }
+    unit_price { 1.00 }
 
   end
 end
