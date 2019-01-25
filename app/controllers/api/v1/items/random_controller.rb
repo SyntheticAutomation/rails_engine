@@ -1,7 +1,8 @@
 class Api::V1::Items::RandomController < ApplicationController
 
   def show
-    render json: ItemSerializer.new(Item.order("RANDOM()").first)
+    random_item = Item.all.sample
+    render json: ItemSerializer.new(random_item)
   end
 
 end

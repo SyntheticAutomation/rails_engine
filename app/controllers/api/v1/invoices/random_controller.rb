@@ -1,7 +1,8 @@
 class Api::V1::Invoices::RandomController < ApplicationController
 
   def show
-    render json: InvoiceSerializer.new(Invoice.order("RANDOM()").first)
+    random_invoice = Invoice.all.sample
+    render json: InvoiceSerializer.new(random_invoice)
   end
 
 end

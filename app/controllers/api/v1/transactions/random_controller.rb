@@ -1,7 +1,8 @@
 class Api::V1::Transactions::RandomController < ApplicationController
 
   def show
-    render json: TransactionSerializer.new(Transaction.order("RANDOM()").first)
+    random_transaction = Transaction.all.sample
+    render json: TransactionSerializer.new(random_transaction)
   end
 
 end
