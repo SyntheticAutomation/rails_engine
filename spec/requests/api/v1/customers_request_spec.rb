@@ -52,5 +52,13 @@ describe 'Customers API' do
 
     expect(customer_1_attributes["last_name"]).to eq("Smith")
   end
+  it 'can find a random customer' do
+    create(:customer)
+    create(:customer)
+    create(:customer)
 
+    get '/api/v1/customers/random'
+
+    customer = JSON.parse(response.body)
+  end
 end

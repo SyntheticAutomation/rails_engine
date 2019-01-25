@@ -52,4 +52,13 @@ describe 'Merchants API' do
 
     expect(merchant_1_attributes["id"]).to eq(349)
   end
+  it 'can find a random merchant' do
+    create(:merchant)
+    create(:merchant)
+    create(:merchant)
+
+    get '/api/v1/merchants/random'
+
+    merchant = JSON.parse(response.body)
+  end
 end

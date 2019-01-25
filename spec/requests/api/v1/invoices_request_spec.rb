@@ -44,4 +44,13 @@ describe 'Invoices API' do
 
     expect(invoice_1_attributes["id"]).to eq(29)
   end
+  it 'can find a random invoice' do
+    create(:invoice)
+    create(:invoice)
+    create(:invoice)
+
+    get '/api/v1/invoices/random'
+
+    invoice = JSON.parse(response.body)
+  end
 end

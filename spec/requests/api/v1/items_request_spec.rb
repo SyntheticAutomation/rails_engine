@@ -53,4 +53,13 @@ describe 'Items API' do
     expect(item_1_attributes["description"]).to eq("yummy")
     expect(item_2_attributes["id"]).to eq(23)
   end
+  it 'can find a random item' do
+    create(:item)
+    create(:item)
+    create(:item)
+
+    get '/api/v1/items/random'
+
+    item = JSON.parse(response.body)
+  end
 end

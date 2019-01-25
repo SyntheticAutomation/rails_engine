@@ -55,4 +55,13 @@ describe 'Transactions API' do
     expect(transaction_1_attributes["id"]).to eq(123)
     expect(transaction_2_attributes["id"]).to eq(400)
   end
+  it 'can find a random transaction' do
+    create(:transaction)
+    create(:transaction)
+    create(:transaction)
+
+    get '/api/v1/transactions/random'
+
+    transaction = JSON.parse(response.body)
+  end
 end
