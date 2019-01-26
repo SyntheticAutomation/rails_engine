@@ -33,6 +33,7 @@ RSpec.describe Merchant, type: :model do
       @invoice_item_3 = create(:invoice_item, invoice: @invoice_3, item: @item_3, quantity: 8, unit_price: 8.00) # $64
       @invoice_item_4 = create(:invoice_item, invoice: @invoice_4, item: @item_4, quantity: 7, unit_price: 7.00) # $49
       @invoice_item_5 = create(:invoice_item, invoice: @invoice_5, item: @item_5, quantity: 6, unit_price: 6.00) # $36
+      @transaction_1 = create(:transaction, invoice: @invoice_1, result: "success")
     end
 
     it '.top_profiteers' do
@@ -53,6 +54,10 @@ RSpec.describe Merchant, type: :model do
     it '.total_revenue_by_date' do
       date = Date.today.strftime("%F")
       expect(Merchant.total_revenue_by_date(date)[0].total_revenue).to eq(330)
+    end
+
+    it '.total_revenue' do
+      expect(Merchant.total_revenue(@merchant_1.id).revenue).to eq(100)
     end
   end
 

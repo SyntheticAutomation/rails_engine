@@ -75,6 +75,23 @@ describe 'Merchants API' do
     expect(total_revenue).to eq(2900)
   end
 
+  it 'can send total revenue for a single merchant' do
+    merchant_1 = create(:merchant)
+    merchant_2 = create(:merchant)
+    item_1 = create(:item, merchant: merchant_1)
+    item_2 = create(:item, merchant: merchant_2)
+    invoice_1 = create(:invoice, merchant: merchant_1)
+    invoice_2 = create(:invoice, merchant: merchant_2)
+    create(:invoice_item, invoice: invoice_1, item: item_1)
+    create(:invoice_item, invoice: invoice_2, item: item_2)
+    create(:transaction, invoice: invoice_1, result: "success")
+
+    get "/api/v1/merchants/#{merchant_1.id}/revenue"
+    expect(response).to be_successful
+    total_revenue = JSON.parse(response.body)
+
+  end
+
   it 'can find multiple merchants by different attributes' do
     create(:merchant, name: "Snacks by Steve", id: 349)
     create(:merchant, name: "Snacks by Steve", id: 11)
