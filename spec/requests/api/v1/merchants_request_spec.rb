@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 describe 'Merchants API' do
+
   it 'sends a list of merchants' do
     create_list(:merchant, 3)
 
@@ -10,6 +11,7 @@ describe 'Merchants API' do
     merchants = JSON.parse(response.body)
     expect(merchants["data"].count).to eq(3)
   end
+
   it 'can get one merchant by its id' do
     id = create(:merchant).id
 
@@ -20,6 +22,7 @@ describe 'Merchants API' do
     expect(response).to be_successful
     expect(merchant["data"]["id"]).to eq(id.to_s)
   end
+
   it 'can send top merchants by revenue' do
     merchant_1 = create(:merchant)
     merchant_2 = create(:merchant)
@@ -36,6 +39,24 @@ describe 'Merchants API' do
     top_merchants_by_revenue = JSON.parse(response.body)
     expect(top_merchants_by_revenue["data"].count).to eq(2)
   end
+
+  it 'can send top merchants by number of items sold' do
+    merchant_1 = create(:merchant)
+    merchant_2 = create(:merchant)
+    item_1 = create(:item, merchant: merchant_1, unit_price: 1.0)
+    item_2 = create(:item, merchant: merchant_2, unit_price: 1.0)
+    invoice_1 = create(:invoice, merchant: merchant_1)
+    invoice_2 = create(:invoice, merchant: merchant_2)
+    create(:invoice_item, invoice: invoice_1, item: item_1, quantity: 1, unit_price: 100.00)
+    create(:invoice_item, invoice: invoice_2, item: item_2, quantity: 1, unit_price: 100.00)
+
+    get '/api/v1/merchants/most_items?quantity=2'
+
+    expect(response).to be_successful
+    top_merchants_by_items_sold = JSON.parse(response.body)
+    expect(top_merchants_by_items_sold["data"].count).to eq(2)
+  end
+
   it 'can find multiple merchants by different attributes' do
     create(:merchant, name: "Snacks by Steve", id: 349)
     create(:merchant, name: "Snacks by Steve", id: 11)
@@ -52,6 +73,7 @@ describe 'Merchants API' do
 
     expect(merchant_1_attributes["id"]).to eq(349)
   end
+
   it 'can find a random merchant' do
     create(:merchant)
     create(:merchant)
