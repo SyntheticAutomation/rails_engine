@@ -4,4 +4,13 @@ class Item < ApplicationRecord
   has_many :invoice_items
   has_many :invoices, through: :invoice_items
 
+
+  def self.most_revenue(limit = 0)
+      joins(invoices: :invoice_items)
+      .group(:id)
+      .order("revenue DESC")
+      .select("items.*, sum(invoice_items.unit_price * invoice_items.quantity) as revenue")
+      .limit(limit)
+    end
+
 end
