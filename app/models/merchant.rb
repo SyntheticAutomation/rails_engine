@@ -3,6 +3,15 @@ class Merchant < ApplicationRecord
   has_many :invoices
   has_many :items
 
+  def self.total_revenue(id)
+    joins(:invoices, invoices: [:invoice_items, :transactions])
+    .group(:id)
+    .order("revenue DESC")
+    .select("sum(invoice_items.unit_price * invoice_items.quantity) as revenue")
+    .where(id: id, transactions: {result: 'success'})
+    .first
+  end
+
   def self.top_profiteers(limit = 0)
     joins(invoices: {:items => :invoice_items} )
     .group("merchants.id")
