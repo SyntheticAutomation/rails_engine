@@ -10,12 +10,14 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
+      namespace :merchants do
+        get '/most_revenue', to: 'most_revenue#index'
+      end
       tables.each do |table|
         namespace table do
           get '/find', to: 'search#show'
           get '/find_all', to: 'search#index'
           get '/random', to: 'random#show'
-          get '/most_revenue', to: 'most_revenue#index' if table == :merchants
         end
       end
 
@@ -27,23 +29,23 @@ Rails.application.routes.draw do
         resources :transactions, only: [:index]
         resources :invoice_items, only: [:index]
         resources :items, only: [:index]
-        resource :customer, only: [:show]
-        resource :merchant, only: [:show]
+        get '/customer', to: "invoices/customer#show"
+        get '/merchant', to: "invoices/merchant#show"
       end
       resources :items, only: [:index, :show] do
         resources :invoice_items, only: [:index]
-        resource :merchant, only: [:show]
+        get '/merchant', to: "items/merchant#show"
       end
       resources :invoice_items, only: [:index, :show] do
-        resource :invoice, only: [:show]
-        resource :item, only: [:show]
+        get '/invoice', to: "invoice_items/invoice#show"
+        get '/item', to: "invoice_items/item#show"
       end
       resources :merchants, only: [:index, :show] do
         resources :items, only: [:index]
         resources :invoices, only: [:index]
       end
       resources :transactions, only: [:index, :show] do
-        resource :invoice, only: [:show]
+        get '/invoice', to: 'transactions/invoice#show'
       end
     end
   end
