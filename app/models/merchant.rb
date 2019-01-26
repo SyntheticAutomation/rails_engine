@@ -42,4 +42,12 @@ class Merchant < ApplicationRecord
     .select("sum(invoice_items.unit_price * invoice_items.quantity) as revenue")
     .where(id: id, transactions: {result: "success"}, invoices: { created_at: parsed_date..parsed_date.at_end_of_day })
   end
+
+  def self.favorite_customer(id)
+    Customer.joins(:invoices, invoices: :transactions)
+    .select("customers.*, count(transactions) as tx_count")
+    .order("tx_count DESC")
+    .group(:id)
+    .where(invoices: {merchant_id: id}, transactions: {result: 'success'})
+  end
 end

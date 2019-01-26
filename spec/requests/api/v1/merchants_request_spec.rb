@@ -109,6 +109,25 @@ describe 'Merchants API' do
     total_revenue = (JSON.parse(response.body))["data"][0]["attributes"]["total_revenue"]
   end
 
+  it 'can send the favorite customer of a merchant' do
+    merchant_1 = create(:merchant)
+    customer_1 = create(:customer)
+    customer_2 = create(:customer)
+    item_1 = create(:item, merchant: merchant_1)
+    invoice_1 = create(:invoice, customer: customer_1, merchant: merchant_1)
+    invoice_2 = create(:invoice, customer: customer_1, merchant: merchant_1)
+    invoice_3 = create(:invoice, customer: customer_2, merchant: merchant_1)
+    create(:transaction, invoice: invoice_1, result: "failed")
+    create(:transaction, invoice: invoice_2, result: "failed")
+    create(:transaction, invoice: invoice_3, result: "success")
+
+    get "/api/v1/merchants/#{merchant_1.id}/favorite_customer"
+
+    expect(response).to be_successful
+    customer = JSON.parse(response.body)["data"]
+
+  end
+
   it 'can find multiple merchants by different attributes' do
     create(:merchant, name: "Snacks by Steve", id: 349)
     create(:merchant, name: "Snacks by Steve", id: 11)

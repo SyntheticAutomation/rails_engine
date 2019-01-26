@@ -64,6 +64,21 @@ RSpec.describe Merchant, type: :model do
       date = Date.today.strftime("%F")
       expect(Merchant.individual_revenue_by_date(@merchant_1.id, date).first.revenue).to eq(100)
     end
+
+    it '.favorite_customer' do
+      merchant_1 = create(:merchant)
+      customer_1 = create(:customer)
+      customer_2 = create(:customer, first_name: "Mark")
+      item_1 = create(:item, merchant: merchant_1)
+      invoice_1 = create(:invoice, customer: customer_1, merchant: merchant_1)
+      invoice_2 = create(:invoice, customer: customer_1, merchant: merchant_1)
+      invoice_3 = create(:invoice, customer: customer_2, merchant: merchant_1)
+      create(:transaction, invoice: invoice_1, result: "failed")
+      create(:transaction, invoice: invoice_2, result: "failed")
+      create(:transaction, invoice: invoice_3, result: "success")
+
+      expect(Merchant.favorite_customer(merchant_1.id).first.first_name).to eq("Mark")
+    end
   end
 
   describe 'Instance Methods' do
