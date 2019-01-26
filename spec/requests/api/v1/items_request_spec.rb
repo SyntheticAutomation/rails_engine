@@ -28,7 +28,7 @@ describe 'Items API' do
                'description=yummy',
                'unit_price=10'
              ]
-    1000.times do
+    100.times do
       sample = query_params.sample
       get "/api/v1/items/find?#{sample}"
       item = JSON.parse(response.body)

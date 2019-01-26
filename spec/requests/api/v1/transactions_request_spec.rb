@@ -30,7 +30,7 @@ describe 'Transactions API' do
                'credit_card_number=4242424242421234',
                'result=success'
              ]
-    1000.times do
+    27.times do
       sample = query_params.sample
       get "/api/v1/transactions/find?#{sample}"
       transaction = JSON.parse(response.body)
