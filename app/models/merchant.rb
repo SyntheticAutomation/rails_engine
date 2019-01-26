@@ -18,4 +18,11 @@ class Merchant < ApplicationRecord
     .select("merchants.*, sum(invoice_items.quantity) as items_sold")
     .limit(limit)
   end
+
+  def self.total_revenue_by_date(date)
+    parsed_date = DateTime.parse(date)
+    joins(invoices: {:items => :invoice_items} )
+    .select("sum(invoice_items.unit_price * invoice_items.quantity) as total_revenue")
+    .where(invoices: { created_at: parsed_date..parsed_date.at_end_of_day })
+  end
 end
