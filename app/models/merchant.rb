@@ -34,4 +34,12 @@ class Merchant < ApplicationRecord
     .select("sum(invoice_items.unit_price * invoice_items.quantity) as total_revenue")
     .where(invoices: { created_at: parsed_date..parsed_date.at_end_of_day })
   end
+
+  def self.individual_revenue_by_date(id, date)
+    parsed_date = DateTime.parse(date)
+    joins(:invoices, invoices: [:invoice_items, :transactions])
+    .group(:id)
+    .select("sum(invoice_items.unit_price * invoice_items.quantity) as revenue")
+    .where(id: id, transactions: {result: "success"}, invoices: { created_at: parsed_date..parsed_date.at_end_of_day })
+  end
 end
