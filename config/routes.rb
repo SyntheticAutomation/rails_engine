@@ -13,6 +13,7 @@ Rails.application.routes.draw do
       namespace :merchants do
         get '/most_revenue', to: 'most_revenue#index'
         get '/most_items', to: 'most_items#index'
+        get '/revenue', to: 'revenue#index'
       end
       tables.each do |table|
         namespace table do
