@@ -59,6 +59,11 @@ RSpec.describe Merchant, type: :model do
     it '.total_revenue' do
       expect(Merchant.total_revenue(@merchant_1.id).revenue).to eq(100)
     end
+
+    it '.individual_revenue_by_date' do
+      date = Date.today.strftime("%F")
+      expect(Merchant.individual_revenue_by_date(@merchant_1.id, date).first.revenue).to eq(100)
+    end
   end
 
   describe 'Instance Methods' do

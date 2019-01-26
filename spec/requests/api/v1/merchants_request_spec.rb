@@ -64,8 +64,8 @@ describe 'Merchants API' do
     item_2 = create(:item, merchant: merchant_2)
     invoice_1 = create(:invoice, merchant: merchant_1)
     invoice_2 = create(:invoice, merchant: merchant_2)
-    create(:invoice_item, invoice: invoice_1, item: item_1, quantity: 20, unit_price: 100.00)
-    create(:invoice_item, invoice: invoice_2, item: item_2, quantity: 9, unit_price: 100.00)
+    create(:invoice_item, invoice: invoice_1, item: item_1, quantity: 20, unit_price: 10000)
+    create(:invoice_item, invoice: invoice_2, item: item_2, quantity: 9, unit_price: 10000)
     date = Date.today.strftime("%F")
 
     get "/api/v1/merchants/revenue?date=#{date}"
@@ -89,7 +89,24 @@ describe 'Merchants API' do
     get "/api/v1/merchants/#{merchant_1.id}/revenue"
     expect(response).to be_successful
     total_revenue = JSON.parse(response.body)
+  end
 
+  it 'can send revenue for a single merchant on a given date' do
+    merchant_1 = create(:merchant)
+    merchant_2 = create(:merchant)
+    item_1 = create(:item, merchant: merchant_1)
+    item_2 = create(:item, merchant: merchant_2)
+    invoice_1 = create(:invoice, merchant: merchant_1)
+    invoice_2 = create(:invoice, merchant: merchant_2)
+    create(:invoice_item, invoice: invoice_1, item: item_1)
+    create(:invoice_item, invoice: invoice_2, item: item_2)
+    create(:transaction, invoice: invoice_1, result: "success")
+    date = Date.today.strftime("%F")
+
+    get "/api/v1/merchants/#{merchant_1.id}/revenue?date=#{date}"
+
+    expect(response).to be_successful
+    total_revenue = (JSON.parse(response.body))["data"][0]["attributes"]["total_revenue"]
   end
 
   it 'can find multiple merchants by different attributes' do
