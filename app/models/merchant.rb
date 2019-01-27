@@ -3,12 +3,12 @@ class Merchant < ApplicationRecord
   has_many :invoices
   has_many :items
 
-  def self.total_revenue(id)
+  def self.total_revenue_earned(id)
     joins(:invoices, invoices: [:invoice_items, :transactions])
     .group(:id)
     .order("revenue DESC")
     .select("sum(invoice_items.unit_price * invoice_items.quantity) as revenue")
-    .where(id: id, transactions: {result: 'success'})
+    .where(id: id, transactions: {result: "success"})
     .first
   end
 
@@ -30,7 +30,7 @@ class Merchant < ApplicationRecord
 
   def self.total_revenue_by_date(date)
     parsed_date = DateTime.parse(date)
-    joins(invoices: {:items => :invoice_items} )
+    joins(invoices: {items: :invoice_items} )
     .select("sum(invoice_items.unit_price * invoice_items.quantity) as total_revenue")
     .where(invoices: { created_at: parsed_date..parsed_date.at_end_of_day })
   end

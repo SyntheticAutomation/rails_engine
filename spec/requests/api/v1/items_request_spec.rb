@@ -68,10 +68,10 @@ describe 'Items API' do
       @i_2 = create(:item)
       @i_3 = create(:item)
       @i_4 = create(:item)
-      @invoice_1 = create(:invoice)
-      @invoice_2 = create(:invoice)
-      @invoice_3 = create(:invoice)
-      @invoice_4 = create(:invoice)
+      @invoice_1 = create(:invoice, created_at: Date.today)
+      @invoice_2 = create(:invoice, created_at: Date.today)
+      @invoice_3 = create(:invoice, created_at: Date.today)
+      @invoice_4 = create(:invoice, created_at: Date.today)
       @invoice_item_1 = create(:invoice_item, item: @i_1, invoice: @invoice_1, unit_price: 1000, quantity: 1)
       @invoice_item_2 = create(:invoice_item, item: @i_2, invoice: @invoice_2, unit_price: 2000, quantity: 2)
       @invoice_item_3 = create(:invoice_item, item: @i_3, invoice: @invoice_3, unit_price: 3000, quantity: 3)
@@ -94,6 +94,11 @@ describe 'Items API' do
       expect(response).to be_successful
       top_items_by_number_sold = JSON.parse(response.body)["data"]
       expect(top_items_by_number_sold[0]["attributes"]["quantity_sold"]).to eq(4)
+    end
+
+    it 'can send the best day by most sales for an item' do
+
+      get "/api/v1/items/#{@i_1.id}/best_day"
     end
   end
 end
