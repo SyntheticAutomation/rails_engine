@@ -79,11 +79,11 @@ Green is passing. Red is failing.
 
 Test suite included use of:
 
--rspec
--capybara
--shoulda-matchers
--FactoryBot
--Faker
+- rspec
+- capybara
+- shoulda-matchers
+- FactoryBot
+- Faker
 
 ## Acknowledgments
 
