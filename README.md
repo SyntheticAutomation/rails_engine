@@ -44,7 +44,7 @@ This API can send the following information:
 # **Setup**
 You will need Rails version 5.2.x.
 ```
-gem install rails -v 5.1
+gem install rails -v 5.2.2
 ```
 Clone down this repo via SSH:
 ```
