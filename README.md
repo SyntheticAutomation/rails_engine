@@ -3,9 +3,7 @@ Turing Mod 3 Backend Engineering 1810
 Solo Project: Rails Engine
 
 A Turing School API created with Ruby on Rails. More information can be found in this blog post:
-```
->link
-```
+`https://medium.com/@syntheticauto900/rails-bootcamp-module-3-project-1-retrospective-summary-ce73703fd22e`
 
 
 This project adheres the spec requirements listed on this site:
