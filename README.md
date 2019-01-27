@@ -15,18 +15,18 @@ The waffle project management board for this project can be found here:
 
 This project was an opportunity to explore creating our own API that returns a bunch of business analytics. Some of the main things I got to practice:
 
--Test Driven Development
--Endpoint creation
--Database relationships
--Rails development (including routing)
--Business Intelligence metrics
--MVC and Rails development
--Advanced ActiveRecord queries
--Database relationships and migrations
--Agile and project management tools
--Nested Resources
--Namespacing
--Deeply Nested Hashes
+- Test Driven Development
+- Endpoint creation
+- Database relationships
+- Rails development (including routing)
+- Business Intelligence metrics
+- MVC and Rails development
+- Advanced ActiveRecord queries
+- Database relationships and migrations
+- Agile and project management tools
+- Nested Resources
+- Namespacing
+- Deeply Nested Hashes
 ------------------------------------------
 ##**Business Intelligence**
 This API can send the following information:
