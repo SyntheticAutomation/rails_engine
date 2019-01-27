@@ -16,9 +16,15 @@ The waffle project management board for this project can be found here:
 
 `https://waffle.io/SyntheticAutomation/rails_engine`
 
+We utilized a database that was created already for us, found at:
+
+`https://github.com/turingschool-examples/sales_engine/tree/master/data`
+
 This project was an opportunity to explore creating our own API that returns a bunch of business analytics. Some of the main things I got to practice:
 
 - Serialization
+- JSON API Compliance
+- Building our first Rake Task
 - RESTful API design
 - Single Responsibility Principle design
 - Test Driven Development
@@ -67,6 +73,10 @@ bundle update
 Build the database in postgresql:
 ```
 rake db:{drop,create,migrate,seed}
+```
+Run my custom rake task found in lib/tasks/import.rake:
+```
+rake import:all
 ```
 Start up your server:
 ```
