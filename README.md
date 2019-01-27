@@ -2,7 +2,10 @@
 Turing Mod 3 Backend Engineering 1810
 Solo Project: Rails Engine
 
-A Turing School API created with Ruby on Rails.
+A Turing School API created with Ruby on Rails. More information can be found in this blog post:
+```
+>link
+```
 
 
 This project adheres the spec requirements listed on this site:
@@ -15,6 +18,9 @@ The waffle project management board for this project can be found here:
 
 This project was an opportunity to explore creating our own API that returns a bunch of business analytics. Some of the main things I got to practice:
 
+- Serialization
+- RESTful API design
+- Single Responsibility Principle design
 - Test Driven Development
 - Endpoint creation
 - Database relationships
