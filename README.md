@@ -41,7 +41,7 @@ This API can send the following information:
 9. the date with the most sales for the given item using the invoice date
 
 
-#**Setup**
+# **Setup**
 You will need Rails version 5.2.x.
 ```
 gem install rails -v 5.1
