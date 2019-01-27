@@ -62,4 +62,38 @@ describe 'Items API' do
 
     item = JSON.parse(response.body)
   end
+  describe 'BI Requests' do
+    before(:each) do
+      @i_1 = create(:item)
+      @i_2 = create(:item)
+      @i_3 = create(:item)
+      @i_4 = create(:item)
+      @invoice_1 = create(:invoice)
+      @invoice_2 = create(:invoice)
+      @invoice_3 = create(:invoice)
+      @invoice_4 = create(:invoice)
+      @invoice_item_1 = create(:invoice_item, item: @i_1, invoice: @invoice_1, unit_price: 1000, quantity: 1)
+      @invoice_item_2 = create(:invoice_item, item: @i_2, invoice: @invoice_2, unit_price: 2000, quantity: 2)
+      @invoice_item_3 = create(:invoice_item, item: @i_3, invoice: @invoice_3, unit_price: 3000, quantity: 3)
+      @invoice_item_4 = create(:invoice_item, item: @i_4, invoice: @invoice_4, unit_price: 4000, quantity: 4)
+    end
+
+    it 'can send the top x items ranked by total revenue generated' do
+
+      get "/api/v1/items/most_revenue?quantity=4"
+
+      expect(response).to be_successful
+      top_items_by_revenue = JSON.parse(response.body)["data"]
+      expect(top_items_by_revenue[0]["attributes"]["revenue"]).to eq(160.00) #expect item 4 to be the top revenue generator and have the correct value
+    end
+
+    it 'can send the top x items ranked by number sold' do
+
+      get "/api/v1/items/most_items?quantity=4"
+
+      expect(response).to be_successful
+      top_items_by_number_sold = JSON.parse(response.body)["data"]
+      expect(top_items_by_number_sold[0]["attributes"]["quantity_sold"]).to eq(4)
+    end
+  end
 end
