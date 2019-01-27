@@ -70,12 +70,16 @@ describe 'Items API' do
       @i_4 = create(:item)
       @invoice_1 = create(:invoice, created_at: Date.today)
       @invoice_2 = create(:invoice, created_at: Date.today)
-      @invoice_3 = create(:invoice, created_at: Date.today)
-      @invoice_4 = create(:invoice, created_at: Date.today)
+      @invoice_3 = create(:invoice, created_at: 4.days.ago)
+      @invoice_4 = create(:invoice, created_at: 20.days.ago)
       @invoice_item_1 = create(:invoice_item, item: @i_1, invoice: @invoice_1, unit_price: 1000, quantity: 1)
       @invoice_item_2 = create(:invoice_item, item: @i_2, invoice: @invoice_2, unit_price: 2000, quantity: 2)
       @invoice_item_3 = create(:invoice_item, item: @i_3, invoice: @invoice_3, unit_price: 3000, quantity: 3)
       @invoice_item_4 = create(:invoice_item, item: @i_4, invoice: @invoice_4, unit_price: 4000, quantity: 4)
+      @transaction_1 = create(:transaction, invoice: @invoice_1)
+      @transaction_2 = create(:transaction, invoice: @invoice_2)
+      @transaction_3 = create(:transaction, invoice: @invoice_3)
+      @transaction_4 = create(:transaction, invoice: @invoice_4)
     end
 
     it 'can send the top x items ranked by total revenue generated' do
@@ -97,8 +101,22 @@ describe 'Items API' do
     end
 
     it 'can send the best day by most sales for an item' do
+      customer_1 = create(:customer)
+      merchant_1 = create(:merchant)
+      item_1 = create(:item, merchant: merchant_1)
+      invoice_1 = create(:invoice, customer: customer_1, merchant: merchant_1, created_at: 3.days.ago)
+      invoice_2 = create(:invoice, customer: customer_1, merchant: merchant_1, created_at: 4.days.ago)
+      invoice_3 = create(:invoice, customer: customer_1, merchant: merchant_1, created_at: 5.days.ago)
+      invoice_4 = create(:invoice, customer: customer_1, merchant: merchant_1, created_at: 6.days.ago)
+      invoice_item_1 = create(:invoice_item, invoice: invoice_1, item: item_1, quantity: 3)
+      invoice_item_2 = create(:invoice_item, invoice: invoice_2, item: item_1, quantity: 4)
+      invoice_item_3 = create(:invoice_item, invoice: invoice_3, item: item_1, quantity: 5)
+      invoice_item_4 = create(:invoice_item, invoice: invoice_4, item: item_1, quantity: 90000)
 
-      get "/api/v1/items/#{@i_1.id}/best_day"
+      get "/api/v1/items/#{item_1.id}/best_day"
+      expect(response).to be_successful
+      best_day = JSON.parse(response.body)["data"]["attributes"]
+      expect(DateTime.parse(best_day["created_at"]).strftime("%F")).to eq(invoice_4.created_at.strftime("%F"))
     end
   end
 end
