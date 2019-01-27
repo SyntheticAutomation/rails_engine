@@ -22,6 +22,10 @@ Rails.application.routes.draw do
         get '/most_items', to: 'most_items#index'
         get '/:id/best_day', to: 'best_day#show'
       end
+      namespace :customers do
+        get '/:id/favorite_merchant', to: 'favorite_merchant#show'
+      end
+
       tables.each do |table|
         namespace table do
           get '/find', to: 'search#show'

@@ -61,4 +61,22 @@ describe 'Customers API' do
 
     customer = JSON.parse(response.body)
   end
+
+  it 'can get the favorite_merchant of a customer' do
+    c_1 = create(:customer)
+    m_1 = create(:merchant, name: "Ditcher, Quick, & Hyde Divorce Law, LLC")
+    m_2 = create(:merchant, name: "The Codfather Fish & Chips")
+    m_3 = create(:merchant, name: "Sew What? Tailoring Inc")
+    inv_1 = create(:invoice, customer: c_1, merchant: m_1)
+    inv_2 = create(:invoice, customer: c_1, merchant: m_1)
+    inv_3 = create(:invoice, customer: c_1, merchant: m_1)
+    inv_4 = create(:invoice, customer: c_1, merchant: m_2)
+    inv_5 = create(:invoice, customer: c_1, merchant: m_3)
+
+    get "/api/v1/customers/#{c_1.id}/favorite_merchant"
+
+    expect(response).to be_successful
+    merchant = JSON.parse(response.body)
+
+  end
 end

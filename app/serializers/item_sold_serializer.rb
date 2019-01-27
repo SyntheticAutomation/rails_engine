@@ -1,4 +1,4 @@
 class ItemSoldSerializer
   include FastJsonapi::ObjectSerializer
-  attributes :quantity_sold
+  attributes :id, :name, :description, :unit_price, :merchant_id, :quantity_sold
 end

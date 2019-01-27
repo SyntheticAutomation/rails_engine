@@ -32,7 +32,8 @@ describe 'Merchants API' do
     invoice_2 = create(:invoice, merchant: merchant_2)
     create(:invoice_item, invoice: invoice_1, item: item_1, quantity: 1, unit_price: 100.00)
     create(:invoice_item, invoice: invoice_2, item: item_2, quantity: 1, unit_price: 100.00)
-
+    create(:transaction, invoice: invoice_1)
+    create(:transaction, invoice: invoice_2)
     get '/api/v1/merchants/most_revenue?quantity=2'
 
     expect(response).to be_successful
@@ -49,6 +50,8 @@ describe 'Merchants API' do
     invoice_2 = create(:invoice, merchant: merchant_2)
     create(:invoice_item, invoice: invoice_1, item: item_1, quantity: 1, unit_price: 100.00)
     create(:invoice_item, invoice: invoice_2, item: item_2, quantity: 1, unit_price: 100.00)
+    create(:transaction, invoice: invoice_1)
+    create(:transaction, invoice: invoice_2)
 
     get '/api/v1/merchants/most_items?quantity=2'
 
@@ -72,7 +75,7 @@ describe 'Merchants API' do
 
     expect(response).to be_successful
     total_revenue = (JSON.parse(response.body))["data"][0]["attributes"]["total_revenue"]
-    expect(total_revenue).to eq(2900)
+    expect(total_revenue).to eq("2900.0")
   end
 
   it 'can send total revenue for a single merchant' do
