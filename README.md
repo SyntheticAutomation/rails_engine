@@ -28,7 +28,7 @@ This project was an opportunity to explore creating our own API that returns a b
 - Namespacing
 - Deeply Nested Hashes
 ------------------------------------------
-##**Business Intelligence**
+## **Business Intelligence**
 This API can send the following information:
 1. top x merchants ranked by total revenue
 2. top x merchants ranked by total number of items sold
